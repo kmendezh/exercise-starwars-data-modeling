@@ -8,13 +8,6 @@ from eralchemy import render_er
 
 Base = declarative_base()
 
-class User(Base):
-    __tablename__ = 'user'
-    # Define the structure of the user table
-    id = Column(Integer, primary_key = True)
-    user_name = Column(String(30), nullable=False)
-    pswd = Column(String(30), nullable=False)
-
 class People(Base):
     __tablename__ = 'people'
     # Define the structure of the people table
@@ -74,12 +67,20 @@ class Favorites(Base):
     __tablename__ = 'favorites'
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('user.id'))
-    user = relationship(User)
-    
-    type = Column(String(15))
+    object_Type = Column(String(15))
+    object_Id = Column(String(50))
 
     def to_dict(self):
         return {}
+
+
+class User(Base):
+    __tablename__ = 'user'
+    # Define the structure of the user table
+    id = Column(Integer, primary_key = True)
+    user_name = Column(String(30), nullable=False)
+    pswd = Column(String(30), nullable=False)
+    favorites = relationship(Favorites)
 
 ## Draw from SQLAlchemy base
 render_er(Base, 'diagram.png')
